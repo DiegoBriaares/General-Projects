@@ -14,7 +14,7 @@ string line, word, temp;
 int cont = 0;
 
 typedef pair< int, pair< string, string > > invoice;
-map<invoice, bool, greater <invoice> > Invoices;
+map<invoice, pair<bool, int>, greater <invoice> > Invoices;
 
 string delete_commas(string S){
 	string ans; 
@@ -33,8 +33,9 @@ int main(){
     if(!fin.fail()){
     	string id, date, total;
     	bool vis;
-    	while(fin >> id >> date >> vis >> total){
-    		Invoices[mp(stoi(delete_commas(total), nullptr), mp(id, date))] = vis;
+        int folio;
+    	while(fin >> id >> folio >> date >> vis >> total){
+    		Invoices[mp(stoi(delete_commas(total), nullptr), mp(id, date))] = make_pair(vis, folio);
     	}
     }
 
@@ -62,11 +63,11 @@ int main(){
   			row.push_back(word);
         }
 
-        string num = delete_commas(row[11]);
+        string num = delete_commas(row[7]);
         cout << cont << " ";
         if(num.size() > 0 && num[0] >= '0' && num[0] <= '9' && row[2].size() > 0 && row[4].size() > 0){
         	if(Invoices.find(mp(stoi(num, nullptr), mp(row[4], row[2]))) == Invoices.end()){
-        		Invoices[mp(stoi(num, nullptr), mp(row[4], row[2]))] = false;
+        		Invoices[mp(stoi(num, nullptr), mp(row[4], row[2]))] = make_pair(false, stoi(row[3]));
         		cout << "Agregado";
         	}
         }
@@ -78,8 +79,8 @@ int main(){
     
     fout.open("Facturas.txt", ios::out);
 
-    for(map<invoice, bool>::iterator it = Invoices.begin(); it != Invoices.end(); it++){
-		fout << (it->st).nd.st << " " << (it->st).nd.nd << " " << it->nd << " " << (it->st).st/100 << "." << (((it->st).st)%100)/10 << ((it->st).st)%10 << "\n";
+    for(map<invoice, pair<bool, int> >::iterator it = Invoices.begin(); it != Invoices.end(); it++){
+		fout << (it->st).nd.st << " " << (it->nd).nd << " " << (it->st).nd.nd << " " << (it->nd).st << " " << (it->st).st/100 << "." << (((it->st).st)%100)/10 << ((it->st).st)%10 << "\n";
  	}
 
  	fout.close();

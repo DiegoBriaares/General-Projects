@@ -11,7 +11,7 @@ using namespace std;
 		string date, amount;
 		cin >> date >> amount;
 		ifstream readD("Depositos.txt");
-		string d, a, b, c, xx, yy;
+		string d, a, b, c, xx, yy, bazura;
 		set<string> to_delete;
 		while (readD >> d) {
 			if (d == date) {
@@ -21,7 +21,7 @@ using namespace std;
 					while (readD >> a) {
 						if ((int)a.size() > 15) {
 							to_delete.insert(a);
-							readD >> b >> c;
+							readD >> b >> bazura >> c;
 						}
 						else break;
 					}
@@ -33,17 +33,17 @@ using namespace std;
 		stringstream outF;
 		int p = 0;
 		while (readF >> d) {
-			if (p % 4 == 0) {
+			if (p % 5 == 0) {
 				if (to_delete.find(d) != to_delete.end()) {
-					readF >> a >> b >> c;
-					outF << d << " " << a << " 0 " << c << "\n";
+					readF >> bazura >> a >> b >> c;
+					outF << d << " " << bazura << " " << a << " 0 " << c << "\n";
 					to_delete.erase(to_delete.find(d));
 					continue;
 				}
 			}
 			outF << d;
 			p++;
-			if (p % 4 == 0) outF << "\n";
+			if (p % 5 == 0) outF << "\n";
 			else outF << " ";
 		}
 		readF.close();

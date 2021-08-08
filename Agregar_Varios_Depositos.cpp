@@ -45,6 +45,7 @@ int dateVal(string S){
 vector<string> totals;
 vector<int> facts;
 vector<string> ids;
+vector<int> folios;
 vector<int> Nums;
 vector<bool> visited;
 vector<string> dates;
@@ -104,10 +105,11 @@ int main(){
 
     bool vis;
     string id, date, total;
-    int cont = 0;
-    while(fin >> id >> date >> vis >> total){
+    int folio, cont = 0;
+    while(fin >> id >> folio >> date >> vis >> total){
         ids.push_back(id);
         totals.push_back(total);
+        folios.push_back(folio);
         dates.push_back(date);
         visited.push_back(vis);
         cont++;
@@ -157,7 +159,7 @@ int main(){
         int realcash = realDep;
         for(int i=0; i<nFacts; i++){
             if(minId[i][cash] == true){
-                cout << "\t" << ids[Nums[i]] << " " << dates[Nums[i]] << " " << totals[Nums[i]] << "\n"; 
+                cout << "\t" << ids[Nums[i]] << " " << folios[Nums[i]] << " " << dates[Nums[i]] << " " << totals[Nums[i]] << "\n"; 
                 cash -= facts[i];
                 realcash -= stoi(clear_num(totals[Nums[i]]), nullptr);
             }
@@ -171,7 +173,7 @@ int main(){
         realcash = realDep;
         for(int i=0; i<nFacts; i++){
             if(minId[i][cash] == true){
-                fout << "\t" << ids[Nums[i]] << " " << dates[Nums[i]] << " " << totals[Nums[i]] << "\n"; 
+                fout << "\t" << ids[Nums[i]] << " " << folios[Nums[i]] << " " << dates[Nums[i]] << " " << totals[Nums[i]] << "\n"; 
                 visited[Nums[i]] = true;
                 cash -= facts[i];
                 realcash -= stoi(clear_num(totals[Nums[i]]), nullptr);
@@ -179,6 +181,7 @@ int main(){
         } 
         realcash *= (realcash < 0 ? -1 : 1);
         fout << "\n";
+        cout << "\n\n";
     }
 
     fout.close();
@@ -188,8 +191,9 @@ int main(){
     fout.open("Facturas.txt", ios::out);
     
     for(int i=0; i<totals.size(); i++){
-        fout << ids[i] << " " << dates[i] << " " << visited[i] << " " << totals[i] << "\n";
+        fout << ids[i] << " " << folios[i] << " " << dates[i] << " " << visited[i] << " " << totals[i] << "\n";
     }
+
 
     fout.close();
 
