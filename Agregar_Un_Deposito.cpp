@@ -39,7 +39,7 @@ int dateVal(string S){
     sYear.push_back(S[7]);
     sYear.push_back(S[8]);
     sYear.push_back(S[9]);
-    return stoi(sDay, nullptr) + stoi(sMonth, nullptr)*50 + stoi(sYear, nullptr)*500;
+    return stoi(sDay, nullptr) + stoi(sMonth, nullptr)*50 + stoi(sYear, nullptr)*1000;
 }
 
 vector<string> totals;
@@ -153,7 +153,7 @@ int main(){
     realcash = realDep;
     for(int i=0; i<nFacts; i++){
         if(minId[i][cash] == true){
-            fout << "\t" << ids[Nums[i]] << " " << folios[Nums[i]] << " " << dates[Nums[i]] << " " << totals[Nums[i]] << "\n"; 
+            fout << "\t" << ids[Nums[i]] << "\t" << folios[Nums[i]] << "\t" << dates[Nums[i]] << "\t" << totals[Nums[i]] << "\n"; 
             visited[Nums[i]] = true;
             cash -= facts[i];
             realcash -= stoi(clear_num(totals[Nums[i]]), nullptr);
