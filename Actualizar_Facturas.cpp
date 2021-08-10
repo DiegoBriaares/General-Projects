@@ -15,6 +15,7 @@ int cont = 0;
 
 typedef pair< int, pair< string, string > > invoice;
 map<invoice, pair<bool, int>, greater <invoice> > Invoices;
+map<int, pair<string, string> > User_Data;
 
 string delete_commas(string S){
 	string ans; 
@@ -32,10 +33,13 @@ int main(){
 
     if(!fin.fail()){
     	string id, date, total;
+        string RFC, name;
     	bool vis;
         int folio;
-    	while(fin >> id >> folio >> date >> vis >> total){
+    	while(fin >> id >> folio >> date >> vis >> total >> RFC){
+            getline(fin, name);
     		Invoices[mp(stoi(delete_commas(total), nullptr), mp(id, date))] = make_pair(vis, folio);
+            User_Data[folio] = make_pair(RFC, name);            
     	}
     }
 
@@ -65,10 +69,11 @@ int main(){
 
         string num = delete_commas(row[7]);
         cout << cont << " ";
-        if(num.size() > 0 && num[0] >= '0' && num[0] <= '9' && row[2].size() > 0 && row[4].size() > 0){
-        	if(Invoices.find(mp(stoi(num, nullptr), mp(row[4], row[2]))) == Invoices.end()){
+        if(num.size() > 0 && num[0] >= '0' && num[0] <= '9' && row[2].size() > 0 && row[4].size() > 0 && row[3].size() > 0){
+        	if(Invoices.find(make_pair(stoi(num, nullptr), mp(row[4], row[2]))) == Invoices.end()){
         		Invoices[mp(stoi(num, nullptr), mp(row[4], row[2]))] = make_pair(false, stoi(row[3]));
-        		cout << "Agregado";
+        		User_Data[stoi(row[3])] = make_pair(row[5], row[6]);
+                cout << "Agregado";
         	}
         }
         cout << "\n";
@@ -80,7 +85,8 @@ int main(){
     fout.open("Facturas.txt", ios::out);
 
     for(map<invoice, pair<bool, int> >::iterator it = Invoices.begin(); it != Invoices.end(); it++){
-		fout << (it->st).nd.st << " " << (it->nd).nd << " " << (it->st).nd.nd << " " << (it->nd).st << " " << (it->st).st/100 << "." << (((it->st).st)%100)/10 << ((it->st).st)%10 << "\n";
+		fout << (it->st).nd.st << " " << (it->nd).nd << " " << (it->st).nd.nd << " " << (it->nd).st << " " << (it->st).st/100 << "." << (((it->st).st)%100)/10 << ((it->st).st)%10 << " ";
+        fout << User_Data[(it->nd).nd].st << " " << User_Data[(it->nd).nd].nd << "\n";
  	}
 
  	fout.close();

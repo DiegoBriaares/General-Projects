@@ -45,6 +45,8 @@ int dateVal(string S){
 vector<string> totals;
 vector<int> facts;
 vector<string> ids;
+vector<string> RFCs;
+vector<string> names;
 vector<int> Nums;
 vector<int> folios;
 vector<bool> visited;
@@ -96,8 +98,10 @@ int main(){
 
     bool vis;
     string id, date, total;
+    string RFC, name;
     int folio, cont = 0;
-    while(fin >> id >> folio >> date >> vis >> total){
+    while(fin >> id >> folio >> date >> vis >> total >> RFC){
+        getline(fin, name);
         int fval = stoi(total, nullptr);
         if(dateVal(date) <= dateVal(Date) && vis == false && fval <= Dep){
             facts.push_back(fval);
@@ -106,6 +110,8 @@ int main(){
         ids.push_back(id);
         totals.push_back(total);
         dates.push_back(date);
+        RFCs.push_back(RFC);
+        names.push_back(name);
         visited.push_back(vis);
         folios.push_back(folio);
         cont++;
@@ -153,7 +159,7 @@ int main(){
     realcash = realDep;
     for(int i=0; i<nFacts; i++){
         if(minId[i][cash] == true){
-            fout << "\t" << ids[Nums[i]] << "\t" << folios[Nums[i]] << "\t" << dates[Nums[i]] << "\t" << totals[Nums[i]] << "\n"; 
+            fout << "\t" << dates[Nums[i]] << "\t" << folios[Nums[i]] << "\t" << ids[Nums[i]] << "\t" << RFCs[Nums[i]] << "\t" << names[Nums[i]] << "\t" << totals[Nums[i]] << "\n"; 
             visited[Nums[i]] = true;
             cash -= facts[i];
             realcash -= stoi(clear_num(totals[Nums[i]]), nullptr);
@@ -169,7 +175,7 @@ int main(){
     fout.open("Facturas.txt", ios::out);
     
     for(int i=0; i<totals.size(); i++){
-        fout << ids[i] << " " << folios[i] << " " << dates[i] << " " << visited[i] << " " << totals[i] << "\n";
+        fout << ids[i] << " " << folios[i] << " " << dates[i] << " " << visited[i] << " " << totals[i] << " " << RFCs[i] << " " << names[i] << "\n";
     }
 
     fout.close();
